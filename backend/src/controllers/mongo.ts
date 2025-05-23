@@ -2,12 +2,9 @@ import mongoose from "mongoose";
 import { RequestBody } from "../types";
 
 class MongoClient {
-  private dbName: string;
   private requestBodyModel: mongoose.Model<RequestBody>;
 
-  constructor(dbName: string = "requestBodies") {
-    this.dbName = dbName;
-
+  constructor() {
     const schema = new mongoose.Schema<RequestBody>({
       request: mongoose.Schema.Types.String,
     });
@@ -41,7 +38,7 @@ class MongoClient {
   public async connectToDatabase(): Promise<void> {
     try {
       if (mongoose.connection.readyState !== 1) {
-        await mongoose.connect(`${process.env.MONGODB_URI}/${this.dbName}`);
+        await mongoose.connect(`${process.env.MONGODB_URI}`);
         console.log("Connected to MongoDB");
       }
     } catch (error: any) {
